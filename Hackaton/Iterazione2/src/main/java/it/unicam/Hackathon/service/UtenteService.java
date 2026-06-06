@@ -36,6 +36,10 @@ public class UtenteService {
         return u;
     }
 
+    public void terminaSessione(Long utenteId) {
+        findById(utenteId);
+    }
+
     @Transactional
     public Utente aggiornaRuolo(Long utenteId, RuoloUtente ruolo) {
         Utente u = findById(utenteId);
