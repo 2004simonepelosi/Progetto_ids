@@ -1,8 +1,8 @@
 package it.unicam.Hackathon.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.;
-import lombok.;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "segnalazioni")
