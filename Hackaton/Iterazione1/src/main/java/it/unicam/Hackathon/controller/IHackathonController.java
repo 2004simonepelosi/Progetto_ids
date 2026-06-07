@@ -20,11 +20,7 @@ public class IHackathonController {
     public ResponseEntity<List<Hackathon>> listaTutti() {
         return ResponseEntity.ok(gestoreHackathon.getAllHackathon());
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Hackathon> getDettagli(@PathVariable Long id) {
-        return ResponseEntity.ok(gestoreHackathon.getDettagli(id));
-    }
+    
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> creaHackathon(@RequestBody CreaHackathonRequest dto) {
