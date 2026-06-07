@@ -1,5 +1,6 @@
 package it.unicam.Hackathon.service;
 
+import it.unicam.Hackathon.dto.LoginRequest;
 import it.unicam.Hackathon.dto.RegistrazioneRequest;
 import it.unicam.Hackathon.entity.Utente;
 import it.unicam.Hackathon.validator.ValidatorUser;
@@ -18,6 +19,11 @@ public class GestoreUtente {
         return utenteService.creaUtente(
                 dto.getNome(), dto.getCognome(),
                 dto.getEmail(), dto.getPassword());
+    }
+
+    public Utente loginUtente(LoginRequest dto) {
+        validatorUser.verificaDati(dto);
+        return utenteService.loginUtente(dto.getEmail(), dto.getPassword());
     }
 
     public Utente findById(Long id) {
