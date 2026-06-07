@@ -1,6 +1,7 @@
 package it.unicam.Hackathon.service;
 
 import it.unicam.Hackathon.dto.CreaHackathonRequest;
+import it.unicam.Hackathon.dto.ModificaHackathonRequest;
 import it.unicam.Hackathon.entity.*;
 import it.unicam.Hackathon.entity.enums.StatoHackathon;
 import it.unicam.Hackathon.exception.ResourceNotFoundException;
@@ -27,6 +28,21 @@ public class HackathonService {
                 .premio(dto.getPremio()).organizzatore(organizzatore)
                 .stato(StatoHackathon.IN_PREPARAZIONE)
                 .build();
+        return repositoryHackathon.save(h);
+    }
+
+    @Transactional
+    public Hackathon modificaHackathon(Long hackathonId, ModificaHackathonRequest dto) {
+        Hackathon h = findById(hackathonId);
+        if (dto.getNome() != null) h.setNome(dto.getNome());
+        if (dto.getDescrizione() != null) h.setDescrizione(dto.getDescrizione());
+        if (dto.getLuogo() != null) h.setLuogo(dto.getLuogo());
+        if (dto.getDataInizio() != null) h.setDataInizio(dto.getDataInizio());
+        if (dto.getDataFine() != null) h.setDataFine(dto.getDataFine());
+        if (dto.getDataIscrizione() != null) h.setDataIscrizione(dto.getDataIscrizione());
+        if (dto.getNumeroMassimoPersone() > 0) h.setNumeroMassimoPersone(dto.getNumeroMassimoPersone());
+        if (dto.getNumeroMinimoPersone() > 0) h.setNumeroMinimoPersone(dto.getNumeroMinimoPersone());
+        if (dto.getPremio() > 0) h.setPremio(dto.getPremio());
         return repositoryHackathon.save(h);
     }
 
