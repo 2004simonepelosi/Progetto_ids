@@ -21,14 +21,24 @@ public class SegnalazioneService {
         if (mentore.getRuolo() != RuoloUtente.MENTORE)
             throw new BusinessException("Solo un Mentore può segnalare un team!");
         Segnalazione s = Segnalazione.builder()
-                .mentore(mentore).team(team).hackathon(hackathon)
-                .descrizione(descrizione).build();
+                .mentore(mentore).team(team).hackathon(hackathon).descrizione(descrizione)
+                .build();
         return repositorySegnalazione.save(s);
     }
 
     public Segnalazione findById(Long id) {
         return repositorySegnalazione.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Segnalazione non trovata: " + id));
+    }
+
+    @Transactional
+    public Segnalazione applicaSanzione(Long segnalazioneId, Utente organizzatore, String sanzione) {
+        if (organizzatore.getRuolo() != RuoloUtente.ORGANIZZATORE)
+            throw new BusinessException("Solo l'Organizzatore può applicare sanzioni!");
+        Segnalazione s = findById(segnalazioneId);
+        s.setSanzione(sanzione);
+        s.setOrganizzatore(organizzatore);
+        return repositorySegnalazione.save(s);
     }
 
     public List<Segnalazione> getAllSegnalazioni(Long teamId) {
