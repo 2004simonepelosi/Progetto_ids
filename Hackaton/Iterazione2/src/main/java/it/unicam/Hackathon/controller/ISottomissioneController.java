@@ -1,6 +1,6 @@
 package it.unicam.Hackathon.controller;
 
-import it.unicam.Hackathon.dto.SottomissioneRequest;
+import it.unicam.Hackathon.dto.*;
 import it.unicam.Hackathon.entity.Sottomissione;
 import it.unicam.Hackathon.service.GestoreHackathon;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +18,17 @@ public class ISottomissioneController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> inviaSottomissione(@RequestBody SottomissioneRequest dto) {
         Sottomissione s = gestoreHackathon.salvaSottomissione(dto);
+        return ResponseEntity.ok(Map.of(
+                "messaggio", "Sottomissione Salvata!",
+                "id", s.getId(),
+                "team", s.getTeam().getNome(),
+                "hackathon", s.getHackathon().getNome()
+        ));
+    }
+
+    @PutMapping
+    public ResponseEntity<Map<String, Object>> aggiornaSottomissione(@RequestBody AggiornaSottomissioneRequest dto) {
+        Sottomissione s = gestoreHackathon.aggiornaSottomissione(dto);
         return ResponseEntity.ok(Map.of(
                 "messaggio", "Sottomissione Salvata!",
                 "id", s.getId(),
