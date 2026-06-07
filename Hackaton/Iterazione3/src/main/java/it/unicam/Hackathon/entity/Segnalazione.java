@@ -1,8 +1,8 @@
 package it.unicam.Hackathon.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.;
+import lombok.;
 
 @Entity
 @Table(name = "segnalazioni")
@@ -17,6 +17,11 @@ public class Segnalazione {
     @JoinColumn(name = "mentore_id")
     @JsonIgnore
     private Utente mentore;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organizzatore_id")
+    @JsonIgnore
+    private Utente organizzatore;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", nullable = false)
