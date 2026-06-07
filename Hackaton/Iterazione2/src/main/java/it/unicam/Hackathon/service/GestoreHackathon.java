@@ -42,6 +42,15 @@ public class GestoreHackathon {
         return sottomissioneService.salva(dto.getContenuto(), team, hackathon);
     }
 
+    /** Nuovo in iterazione 2 */
+    public Sottomissione aggiornaSottomissione(AggiornaSottomissioneRequest dto) {
+        sottomissioneService.findByTeamId(dto.getTeamId())
+                .ifPresent(s -> sottomissioneService.elimina(s.getId()));
+        Team team = teamService.findById(dto.getTeamId());
+        Hackathon hackathon = hackathonService.findById(dto.getHackathonId());
+        return sottomissioneService.salva(dto.getContenuto(), team, hackathon);
+    }
+
     public Valutazione salvaValutazione(ValutazioneRequest dto) {
         Sottomissione s = sottomissioneService.findById(dto.getSottomissioneId());
         Utente giudice = utenteService.findById(dto.getGiudiceId());
