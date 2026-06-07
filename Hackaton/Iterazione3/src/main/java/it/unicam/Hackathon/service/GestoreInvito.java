@@ -4,6 +4,7 @@ import it.unicam.Hackathon.dto.InvitoRequest;
 import it.unicam.Hackathon.entity.*;
 import it.unicam.Hackathon.entity.enums.RuoloUtente;
 import it.unicam.Hackathon.entity.enums.StatoInvito;
+import it.unicam.Hackathon.repository.RepositoryMembro;
 import it.unicam.Hackathon.validator.InvitoValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class GestoreInvito {
     private final InvitoService invitoService;
     private final UtenteService utenteService;
     private final TeamService teamService;
+    private final RepositoryMembro repositoryMembro;
 
     public Invito creaInvito(InvitoRequest dto) {
         invitoValidator.validate(dto);
@@ -30,6 +32,11 @@ public class GestoreInvito {
         Invito invito = invitoService.getInvito(invitoId);
         invito = invitoService.aggiornaInvito(invito, StatoInvito.ACCETTATO);
         utenteService.aggiornaRuolo(invito.getUtente().getId(), RuoloUtente.MEMBRO);
+        Membro membro = Membro.builder()
+                .utente(invito.getUtente())
+                .team(invito.getTeam())
+                .build();
+        repositoryMembro.save(membro);
         return invito;
     }
 
