@@ -1,6 +1,6 @@
 package it.unicam.Hackathon.controller;
 
-import it.unicam.Hackathon.dto.ValutazioneRequest;
+import it.unicam.Hackathon.dto.*;
 import it.unicam.Hackathon.entity.Valutazione;
 import it.unicam.Hackathon.service.GestoreHackathon;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +20,18 @@ public class IValutazioneController {
         Valutazione v = gestoreHackathon.salvaValutazione(dto);
         return ResponseEntity.ok(Map.of(
                 "messaggio", "Valutazione salvata con successo!",
-                "id", v.getId(),
-                "voto", v.getVoto(),
-                "giudizio", v.getTesto(),
+                "id", v.getId(), "voto", v.getVoto(), "giudizio", v.getTesto(),
                 "giudice", v.getGiudice().getNome() + " " + v.getGiudice().getCognome()
+        ));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> modificaValutazione(
+            @PathVariable Long id, @RequestBody ModificaValutazioneRequest dto) {
+        Valutazione v = gestoreHackathon.modificaValutazione(id, dto);
+        return ResponseEntity.ok(Map.of(
+                "messaggio", "Nuova Valutazione salvata con successo!",
+                "id", v.getId(), "voto", v.getVoto(), "giudizio", v.getTesto()
         ));
     }
 }
