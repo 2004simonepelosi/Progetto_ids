@@ -3,6 +3,7 @@ package it.unicam.Hackathon.service;
 import it.unicam.Hackathon.dto.*;
 import it.unicam.Hackathon.entity.*;
 import it.unicam.Hackathon.entity.enums.RuoloUtente;
+import it.unicam.Hackathon.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,6 +18,7 @@ public class GestoreHackathon {
     private final UtenteService utenteService;
     private final TeamService teamService;
     private final SegnalazioneService segnalazioneService;
+    private final ErogazioneService erogazioneService;
 
     public Hackathon creaHackathon(CreaHackathonRequest dto) {
         Utente organizzatore = utenteService.findById(dto.getOrganizzatoreId());
@@ -73,6 +75,19 @@ public class GestoreHackathon {
     public Segnalazione applicaSanzione(SanzioneRequest dto) {
         Utente organizzatore = utenteService.findById(dto.getOrganizzatoreId());
         return segnalazioneService.applicaSanzione(dto.getSegnalazioneId(), organizzatore, dto.getSanzione());
+    }
+
+    public String avviaErogazionePremio(Long hackathonId, Long organizzatoreId) {
+        Hackathon h = hackathonService.findById(hackathonId);
+        Utente org = utenteService.findById(organizzatoreId);
+        if (!h.getOrganizzatore().getId().equals(org.getId()))
+            throw new BusinessException("Solo l'organizzatore può avviare l'erogazione!");
+        return erogazioneService.getRiepilogoPremio(h);
+    }
+
+    public Erogazione erogaPremio(Long hackathonId) {
+        Hackathon h = hackathonService.findById(hackathonId);
+        return erogazioneService.registraErogazione(h);
     }
 
     public Hackathon proclamaVincitore(Long hackathonId, Long teamId) {
