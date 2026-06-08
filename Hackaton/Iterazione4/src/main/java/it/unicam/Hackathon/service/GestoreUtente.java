@@ -26,6 +26,10 @@ public class GestoreUtente {
         return utenteService.loginUtente(dto.getEmail(), dto.getPassword());
     }
 
+    public void logout(Long utenteId) {
+        utenteService.terminaSessione(utenteId);
+    }
+
     public Utente findById(Long id) {
         return utenteService.findById(id);
     }

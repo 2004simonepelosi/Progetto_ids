@@ -20,8 +20,7 @@ public class IUserController {
         Utente u = gestoreUtente.registrazioneUtente(dto);
         return ResponseEntity.ok(Map.of(
                 "messaggio", "Benvenuto " + u.getNome() + "!",
-                "id", u.getId(),
-                "utente", u.getNome() + " " + u.getCognome(),
+                "id", u.getId(), "utente", u.getNome() + " " + u.getCognome(),
                 "ruolo", u.getRuolo()
         ));
     }
@@ -31,9 +30,17 @@ public class IUserController {
         Utente u = gestoreUtente.loginUtente(dto);
         return ResponseEntity.ok(Map.of(
                 "messaggio", "Benvenuto " + u.getNome() + "!",
-                "id", u.getId(),
-                "utente", u.getNome() + " " + u.getCognome(),
+                "id", u.getId(), "utente", u.getNome() + " " + u.getCognome(),
                 "ruolo", u.getRuolo()
+        ));
+    }
+
+    @PostMapping("/{id}/logout")
+    public ResponseEntity<Map<String, Object>> logout(@PathVariable Long id) {
+        gestoreUtente.logout(id);
+        return ResponseEntity.ok(Map.of(
+                "messaggio", "Logout effettuato!",
+                "schermata", "accesso"
         ));
     }
 }

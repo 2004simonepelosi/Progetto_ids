@@ -1,7 +1,7 @@
 package it.unicam.Hackathon.controller;
 
 import it.unicam.Hackathon.dto.*;
-import it.unicam.Hackathon.entity.Hackathon;
+import it.unicam.Hackathon.entity.*;
 import it.unicam.Hackathon.service.GestoreHackathon;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +30,8 @@ public class IHackathonController {
     public ResponseEntity<Map<String, Object>> creaHackathon(@RequestBody CreaHackathonRequest dto) {
         Hackathon h = gestoreHackathon.creaHackathon(dto);
         return ResponseEntity.ok(Map.of(
-                "messaggio", "Hackathon creato con successo!",
-                "id", h.getId(), "nome", h.getNome(),
+                "messaggio", "Hackathon creato con successo!", "id", h.getId(),
+                "nome", h.getNome(),
                 "organizzatore", h.getOrganizzatore().getNome() + " " + h.getOrganizzatore().getCognome(),
                 "ruoloOrganizzatore", h.getOrganizzatore().getRuolo(), "stato", h.getStato()
         ));
@@ -72,6 +72,27 @@ public class IHackathonController {
         return ResponseEntity.ok(Map.of(
                 "messaggio", "Team proclamato vincitore!",
                 "teamVincitore", h.getVincitore().getNome(), "stato", h.getStato()
+        ));
+    }
+
+    @GetMapping("/{id}/erogazione/riepilogo")
+    public ResponseEntity<Map<String, Object>> avviaErogazionePremio(
+            @PathVariable Long id, @RequestParam Long organizzatoreId) {
+        String riepilogo = gestoreHackathon.avviaErogazionePremio(id, organizzatoreId);
+        return ResponseEntity.ok(Map.of(
+                "messaggio", "Riepilogo premio pronto. Conferma per procedere.",
+                "riepilogo", riepilogo
+        ));
+    }
+
+    @PostMapping("/{id}/erogazione/conferma")
+    public ResponseEntity<Map<String, Object>> erogaPremio(@PathVariable Long id) {
+        Erogazione e = gestoreHackathon.erogaPremio(id);
+        return ResponseEntity.ok(Map.of(
+                "messaggio", "Premio Erogato!",
+                "transazioneId", e.getTransazioneId(),
+                "importo", e.getImporto(),
+                "stato", e.getStato()
         ));
     }
 }

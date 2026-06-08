@@ -30,9 +30,9 @@ public class UtenteService {
 
     public Utente loginUtente(String email, String password) {
         Utente u = repositoryUtente.findByEmail(email)
-                .orElseThrow(() -> new BusinessException("Email non trovata"));
+                .orElseThrow(() -> new BusinessException("Correggi Dati: email non trovata"));
         if (!passwordEncoder.matches(password, u.getPassword()))
-            throw new BusinessException("Password errata");
+            throw new BusinessException("Correggi Dati: password errata");
         return u;
     }
 
